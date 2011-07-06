@@ -1,10 +1,10 @@
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
-
-// grails.config.locations = [ "classpath:${appName}-config.properties",
-//                             "classpath:${appName}-config.groovy",
-//                             "file:${userHome}/.grails/${appName}-config.properties",
-//                             "file:${userHome}/.grails/${appName}-config.groovy"]
+grails.config.locations = [
+        "file:${userHome}/.grails/facebook-config.groovy",
+        "file:${userHome}/.grails/twitter-config.groovy",
+        "file:${userHome}/.grails/google-config.groovy"
+]
 
 // if(System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
@@ -87,6 +87,10 @@ log4j = {
             'net.sf.ehcache.hibernate'
 
     warn 'org.mortbay.log'
+
+    debug 'grails.app',
+            'org.springframework.social',
+            'social'
 }
 
 // Added by the Spring Security Core plugin:
@@ -94,9 +98,3 @@ grails.plugins.springsecurity.userLookup.userDomainClassName = 'demo.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'demo.UserRole'
 grails.plugins.springsecurity.authority.className = 'demo.Role'
 
-
-grails.plugins.springsocial.facebook.appId = "27d9bcea3c686d1bdaaf597f725ca875"
-grails.plugins.springsocial.facebook.appSecret = "0e1037e0edbe4d378c32e2e1a0be77d1"
-
-grails.plugins.springsocial.twitter.consumerKey = "VDtfobfXlwpeuCwMEFrU5A"
-grails.plugins.springsocial.twitter.consumerSecret = "aZOtwPO0PRy35Qdy94Nk6JAYLhTHVWFTk06RWed0I"

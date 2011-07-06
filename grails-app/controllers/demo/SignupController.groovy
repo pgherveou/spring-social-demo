@@ -1,6 +1,6 @@
 package demo
 
-import org.springframework.social.connect.signin.web.ProviderSignInUtils
+import org.springframework.social.connect.web.ProviderSignInUtils
 import org.springframework.web.context.request.RequestContextHolder
 import demo.User
 import demo.UserRole
@@ -26,20 +26,32 @@ class SignupController {
 
     def signup = {
 
-        log.debug "processing sign up"
+       log.debug "processing sign up"
+        if (User.countByUsername(params.username)) {
+            flash.message = "Error: User already exists"
+            redirect(action: "index")
+        }
 
-        def user = new User(
-                username: params.username,
-                password: springSecurityService.encodePassword(params.password),
-                enabled: true
-        ).save(flush: true)
-        UserRole.create user, Role.findByAuthority('ROLE_USER') , true
+        def userInstance = new User(params)
+        userInstance.password = springSecurityService.encodePassword(params.password)
+        userInstance.enabled = true
 
-        signinService.signin(user.username)
-        ProviderSignInUtils.handlePostSignUp(RequestContextHolder.currentRequestAttributes())
+        if (userInstance.save(flush: true)) {
+
+            UserRole.create userInstance, Role.findByAuthority('ROLE_USER'), true
+            springSecurityService.reauthenticate userInstance.username
+            ProviderSignInUtils.handlePostSignUp(userInstance.username, RequestContextHolder.currentRequestAttributes())
+
+            flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.username])
+            redirect(url: ConfigurationHolder.config.grails.serverURL)
+
+        }
+        else {
+            render(view: "create", model: [userInstance: userInstance])
+        }
 
 
-        redirect(url: ConfigurationHolder.config.grails.serverURL)
+
     }
 
 }

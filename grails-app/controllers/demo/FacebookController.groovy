@@ -1,17 +1,25 @@
 package demo
 
-import org.springframework.social.facebook.api.FacebookApi
-import javax.inject.Provider
 import javax.inject.Inject
+import javax.inject.Provider
+import org.springframework.social.facebook.api.Facebook
+import spring.social.SocialApiProviderService
 
 class FacebookController {
 
-    @Inject Provider<FacebookApi> facebookApiProvider
+    def socialApiProviderService
 
-    def getFacebookApi = {facebookApiProvider.get()}
+    private def getFacebookApi = {
+
+        def api = socialApiProviderService.facebook()
+        if (!api) {
+            redirect(controller: "providerConnect", params: ["providerId": "facebook"])
+        }
+        return api;
+    }
 
     def feed = {
-        ["feed" : getFacebookApi().feedOperations().feed]
+        ["feed": getFacebookApi().feedOperations().feed]
     }
 
     def postUpdate = {
@@ -20,22 +28,19 @@ class FacebookController {
     }
 
     def friends = {
-        ["friends" : getFacebookApi().friendOperations().friendProfiles]
+        ["friends": getFacebookApi().friendOperations().friendProfiles]
     }
 
     def albums = {
-        ["albums" : getFacebookApi().mediaOperations().albums]
+        ["albums": getFacebookApi().mediaOperations().albums]
     }
 
-    def showAlbum =  {
-        ["album" : getFacebookApi().mediaOperations().getAlbum(params.id),
-         "photos": getFacebookApi().mediaOperations().getPhotos(params.id)]
+    def showAlbum = {
+        ["album": getFacebookApi().mediaOperations().getAlbum(params.id),
+                "photos": getFacebookApi().mediaOperations().getPhotos(params.id)]
     }
 
     def index = {
-        if (getFacebookApi() == null) {
-            redirect(controller: "providerConnect", params: ["providerId" : "facebook"])
-        }
         ["profile": getFacebookApi().userOperations().userProfile]
     }
 

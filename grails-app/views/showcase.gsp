@@ -28,6 +28,14 @@
     </button>
 </g:form>
 
+
+<!-- GOOGLE SIGNIN -->
+<g:form controller="providerSignin" params="[providerId:'google']">
+    <button type="submit">
+        <img src="${resource(dir: 'images/social/google', file: 'sign-in-with-google.png')}"/>
+    </button>
+</g:form>
+
 </body>
 </html>
 

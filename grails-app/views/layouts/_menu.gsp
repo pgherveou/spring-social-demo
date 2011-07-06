@@ -7,7 +7,6 @@
 	<li><g:link controller="twitter" action="timeline">Timeline</g:link></li>
 	<li><g:link controller="twitter" action="friends">Friends</g:link></li>
 	<li><g:link controller="twitter" action="followers">Followers</g:link></li>
-	<li><g:link controller="twitter" action="messages">Messages</g:link></li>
 	<li><g:link controller="twitter" action="trends">Current Trends</g:link></li>
 </ul>
 </social:ifConnected>
