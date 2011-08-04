@@ -18,7 +18,7 @@
 </dl>
 
 
-<g:form method="delete" controller="providerConnect" action="disconnect" params="[providerId:'facebook']">
+<g:form method="delete" controller="connect" action="disconnect" params="[providerId:'facebook']">
     <button type="submit">Disconnect from Facebook</button>
 </g:form>
 </body>

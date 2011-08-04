@@ -1,48 +1,49 @@
 package demo
 
-import javax.inject.Inject
-import javax.inject.Provider
-import org.springframework.social.facebook.api.Facebook
-import spring.social.SocialApiProviderService
+import grails.plugins.springsecurity.Secured
 
+@Secured(['ROLE_USER'])
 class FacebookController {
 
-    def socialApiProviderService
+    def userConnectionService
+    def api
 
-    private def getFacebookApi = {
-
-        def api = socialApiProviderService.facebook()
+    def beforeInterceptor = [action: this.&setApi, except: 'connect']
+    private setApi() {
+        log.debug "set facebook api"
+        api = userConnectionService.facebook()
         if (!api) {
-            redirect(controller: "providerConnect", params: ["providerId": "facebook"])
+            log.debug "no facebook api redirect to connect"
+            redirect action:"connect"
+            return  false
         }
-        return api;
     }
 
+    def connect = {}
+
     def feed = {
-        ["feed": getFacebookApi().feedOperations().feed]
+        ["feed": api.feedOperations().feed]
     }
 
     def postUpdate = {
-        getFacebookApi().feedOperations().updateStatus(params.message)
-        redirect(action: "feef")
+        redirect(action: "feed")
     }
 
     def friends = {
-        ["friends": getFacebookApi().friendOperations().friendProfiles]
+        ["friends": api.friendOperations().friendProfiles]
     }
 
     def albums = {
-        ["albums": getFacebookApi().mediaOperations().albums]
+        ["albums": api.mediaOperations().albums]
     }
 
     def showAlbum = {
-        ["album": getFacebookApi().mediaOperations().getAlbum(params.id),
-                "photos": getFacebookApi().mediaOperations().getPhotos(params.id)]
+        ["album": api.mediaOperations().getAlbum(params.id),
+                "photos": api.mediaOperations().getPhotos(params.id)]
     }
 
     def index = {
-        ["profile": getFacebookApi().userOperations().userProfile]
+        ["profile": api.userOperations().userProfile]
     }
-
 
 }

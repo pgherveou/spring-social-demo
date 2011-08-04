@@ -1,44 +1,44 @@
 package demo
 
-import javax.inject.Inject
-import javax.inject.Provider
-import org.springframework.social.twitter.api.Twitter
+import grails.plugins.springsecurity.Secured
 
+@Secured(['ROLE_USER'])
 class TwitterController {
 
-    def socialApiProviderService
+    def userConnectionService
 
-    private Twitter getTwitterApi() {
+    def api
 
-        def api = socialApiProviderService.twitter()
+    def beforeInterceptor = [action: this.&setApi, except: 'connect']
+    private setApi() {
+        log.debug "set twitter api"
+        api = userConnectionService.twitter()
         if (!api) {
-            redirect(controller: "providerConnect", params: ["providerId": "twitter"])
+            log.debug "no twitter api redirect to connect"
+            redirect action:"connect"
+            return  false
         }
-        return api;
     }
 
+    def connect = {}
+
     def index = {
-        def api = getTwitterApi()
         [profile: api.userOperations().userProfile]
     }
 
     def timeline = {
-        def api = getTwitterApi()
         [timeline: api.timelineOperations().userTimeline]
     }
 
     def friends = {
-        def api = getTwitterApi()
         [profiles: api.friendOperations().friends]
     }
 
     def followers = {
-        def api = getTwitterApi()
         [profiles: api.friendOperations().followers]
     }
 
     def trends = {
-        def api = getTwitterApi()
         [trends: api.searchOperations().currentTrends.trends]
     }
 }

@@ -12,28 +12,28 @@ class BootStrap {
 
         def user1 = new User(
                 username: "pg",
-                password: springSecurityService.encodePassword("pg"),
+                password: "pg",
                 enabled: true
         ).save(flush: true)
         UserRole.create user1, userRole, true
 
         def user2 = new User(
                 username: "habuma",
-                password: springSecurityService.encodePassword("freebirds"),
+                password: "freebirds",
                 enabled: true
         ).save(flush: true)
         UserRole.create user2, userRole, true
 
         def user3 = new User(
                 username: "kdonald",
-                password: springSecurityService.encodePassword("melbourne"),
+                password: "melbourne",
                 enabled: true
         ).save(flush: true)
         UserRole.create user3, userRole, true
 
         def user4 = new User(
                 username: "rclarkson",
-                password: springSecurityService.encodePassword("atlanta"),
+                password: "atlanta",
                 enabled: true
         ).save(flush: true)
         UserRole.create user4, userRole, true

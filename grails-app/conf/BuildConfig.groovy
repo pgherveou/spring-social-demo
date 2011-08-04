@@ -1,40 +1,60 @@
+grails.servlet.version = "2.5"
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
-//grails.project.war.file = "target/${appName}-${appVersion}.war"
-
-grails.plugin.location.'spring-social' = "../spring-social"
 
 grails.project.dependency.resolution = {
+
+    def socialVersion = "1.0.0.RC2"
+
     // inherit Grails' default dependencies
     inherits("global") {
-        // uncomment to disable ehcache
-        // excludes 'ehcache'
     }
-    log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    log "error"
+    checksums true
+
     repositories {
+        inherits true
         grailsPlugins()
         grailsHome()
         grailsCentral()
 
-        grailsRepo "http://localhost/repo"
+        mavenLocal()
+        mavenCentral()
 
-        // uncomment the below to enable remote dependency resolution
-        // from public Maven repositories
-        //mavenLocal()
-        //mavenCentral()
-        //mavenRepo "http://snapshots.repository.codehaus.org"
-        //mavenRepo "http://repository.codehaus.org"
-        //mavenRepo "http://download.java.net/maven/2/"
-        //mavenRepo "http://repository.jboss.com/maven2/"
+        mavenRepo "http://maven.springframework.org/release"
+        mavenRepo "http://maven.springframework.org/milestone"
+        mavenRepo "http://maven.springframework.org/snapshot"
     }
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
+        runtime('org.springframework.security:spring-security-crypto:3.1.0.CI-SNAPSHOT') {
+            transitive = false
+        }
 
-        // runtime 'mysql:mysql-connector-java:5.1.13'
+        runtime("org.springframework.social:spring-social-core:${socialVersion}") {
+            transitive = false
+        }
+
+        runtime("org.springframework.social:spring-social-web:${socialVersion}") {
+            transitive = false
+        }
+
+        runtime("org.springframework.social:spring-social-twitter:${socialVersion}") {
+            transitive = false
+        }
+
+        runtime("org.springframework.social:spring-social-facebook:${socialVersion}") {
+            transitive = false
+        }
+
+        runtime 'org.codehaus.jackson:jackson-mapper-asl:1.8.2'
     }
 
-    //  test plugin
-  //  grails.plugin.location.'spring-social' = """/Users/PG/Projects/spring-social/grails-spring-social-0.1.zip"""
+    plugins {
+        compile ":hibernate:$grailsVersion"
+        compile ":jquery:1.6.1.1"
+        compile ":resources:1.0.1"
 
+        build ":tomcat:$grailsVersion"
+    }
 }

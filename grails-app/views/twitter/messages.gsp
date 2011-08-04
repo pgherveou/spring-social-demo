@@ -27,7 +27,7 @@
 
     <ul class="choices">
         <li><g:link action="messages">Inbox</g:link></li>
-        <li><g:link action="messages" params="[type:'sent']">Sent</li>
+        <li><g:link action="messages" params="[type:'sent']">Sent</g:link></li>
     </ul>
 
 
