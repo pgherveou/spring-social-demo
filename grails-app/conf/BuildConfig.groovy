@@ -35,9 +35,9 @@ grails.project.dependency.resolution = {
             transitive = false
         }
 
-        runtime("org.springframework.social:spring-social-web:${socialVersion}") {
-            transitive = false
-        }
+//        runtime("org.springframework.social:spring-social-web:${socialVersion}") {
+//            transitive = false
+//        }
 
         runtime("org.springframework.social:spring-social-twitter:${socialVersion}") {
             transitive = false

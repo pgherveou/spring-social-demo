@@ -1,6 +1,5 @@
 package social
 
-import org.springframework.social.connect.web.ProviderSignInAttempt
 import org.springframework.web.context.request.RequestContextHolder
 
 class ProviderSignInController {

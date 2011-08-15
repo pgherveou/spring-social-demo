@@ -1,21 +1,32 @@
 package demo
 
 import grails.plugins.springsecurity.Secured
+import org.springframework.social.facebook.api.Facebook
+import org.springframework.social.facebook.api.ImageType
 
 @Secured(['ROLE_USER'])
 class FacebookController {
 
     def userConnectionService
-    def api
+    Facebook api
 
     def beforeInterceptor = [action: this.&setApi, except: 'connect']
+
     private setApi() {
         log.debug "set facebook api"
         api = userConnectionService.facebook()
         if (!api) {
             log.debug "no facebook api redirect to connect"
-            redirect action:"connect"
-            return  false
+            redirect action: "connect"
+            return false
+        }
+    }
+
+    def profilePict = {
+
+        def img = api.userOperations().getUserProfileImage(params.userId, params.imageType as ImageType)
+        render(contentType: 'media/jpg') {
+            response.outputStream << img
         }
     }
 

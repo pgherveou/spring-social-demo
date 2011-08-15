@@ -1,3 +1,4 @@
+<%@ page import="org.springframework.social.facebook.api.ImageType" %>
 <html>
 <head>
     <title>Welcome to Grails</title>
@@ -6,6 +7,8 @@
 
 <body>
 <h3>Your Facebook Profile</h3>
+
+<img src="${createLink(action: 'profilePict', params:[userId: profile.id, imageType: ImageType.LARGE])}" alt="profile"/>
 
 <p>Hello, ${profile.firstName}!</p>
 <dl>

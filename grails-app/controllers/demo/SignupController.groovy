@@ -1,9 +1,5 @@
 package demo
 
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
-import org.springframework.social.connect.web.ProviderSignInAttempt
-import social.UserConnection
-
 class SignupController {
 
     def springSecurityService
